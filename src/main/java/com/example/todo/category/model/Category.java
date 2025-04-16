@@ -24,7 +24,7 @@ public class Category {
     @Id
     @GeneratedValue
     private Long id;
-    private String name;
+    private String title;
 
     @Override
     public final boolean equals(Object o) {

@@ -42,6 +42,7 @@ public class Task {
     @Lob
     private String description;
     private boolean completed;
+
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 

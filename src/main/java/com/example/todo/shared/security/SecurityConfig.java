@@ -16,7 +16,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
                 requests -> requests.requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/login", "logout", "/auth/register",
+                        .requestMatchers("/login", "/logout", "/auth/register",
                                 "/auth/register/submit", "/h2-console/**", "/img/**", "/css/**")
                         .permitAll().anyRequest().authenticated());
 
@@ -26,12 +26,16 @@ public class SecurityConfig {
 
         http.requestCache(cache -> {
             HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
-            requestCache.setRequestMatcher(null);
+            requestCache.setMatchingRequestParameterName(null);
             cache.requestCache(requestCache);
         });
+
         http.logout(Customizer.withDefaults());
-        http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
-        http.headers(headers -> headers.frameOptions((opts) -> opts.disable()));
+
+        http.csrf((csrf) -> {
+            csrf.ignoringRequestMatchers("/h2-console/**");
+        });
+        http.headers((headers) -> headers.frameOptions((opts) -> opts.disable()));
         return http.build();
     }
 }

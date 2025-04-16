@@ -32,7 +32,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String email;
-    private String fullName;
+    private String fullname;
 
     private UserRole role;
 

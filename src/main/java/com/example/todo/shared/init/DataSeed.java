@@ -1,5 +1,9 @@
 package com.example.todo.shared.init;
 
+import com.example.todo.category.model.Category;
+import com.example.todo.category.model.CategoryRepository;
+import com.example.todo.task.dto.CreateTaskRequest;
+import com.example.todo.task.service.TaskService;
 import com.example.todo.user.dto.CreateUserRequest;
 import com.example.todo.user.model.User;
 import com.example.todo.user.model.UserRole;
@@ -10,17 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
-
-
 @Component
 @RequiredArgsConstructor
 public class DataSeed {
 
+    private final CategoryRepository categoryRepository;
+    private final TaskService taskService;
     private final UserService userService;
 
     @PostConstruct
     public void init() {
-        insertUsers();
+        insertCategories();
+        List<User> users = insertUsers();
+        insertTasks(users.get(0));
     }
 
     /*
@@ -45,24 +51,21 @@ public class DataSeed {
         return result;
     }
 
-    /*
-     * private void insertCategories() {
-     * categoryRepository.save(Category.builder().name("Main").build()); }
-     */
+    private void insertCategories() {
+        categoryRepository.save(Category.builder().title("Main").build());
+    }
 
-    /*
-     * private void insertTasks(User author) {
-     * 
-     * CreateTaskRequest req1 = CreateTaskRequest.builder().title("First task!")
-     * .description("Lorem ipsum dolor sit amet").tags("tag1,tag2,tag3").build();
-     * 
-     * taskService.createTask(req1, author);
-     * 
-     * CreateTaskRequest req2 = CreateTaskRequest.builder().title("Second task!")
-     * .description("Lorem ipsum dolor sit amet").tags("tag1,tag2,tag4").build();
-     * 
-     * taskService.createTask(req2, author);
-     * 
-     * }
-     */
+    private void insertTasks(User author) {
+
+        CreateTaskRequest req1 = CreateTaskRequest.builder().title("First task!")
+                .description("Lorem ipsum dolor sit amet").tags("tag1,tag2,tag3").build();
+
+        taskService.createTask(req1, author);
+
+        CreateTaskRequest req2 = CreateTaskRequest.builder().title("Second task!")
+                .description("Lorem ipsum dolor sit amet").tags("tag1,tag2,tag4").build();
+
+        taskService.createTask(req2, author);
+
+    }
 }

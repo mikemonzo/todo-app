@@ -18,7 +18,7 @@ public class UserService {
     public User registerUser(CreateUserRequest request) {
         return userRepository.save(User.builder().username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword())).email(request.getEmail())
-                .fullName(request.getFullname()).role(UserRole.USER).build());
+                .fullname(request.getFullname()).role(UserRole.USER).build());
     }
 
     public User changeRole(User user, UserRole role) {
