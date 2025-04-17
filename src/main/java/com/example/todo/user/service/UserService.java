@@ -1,5 +1,7 @@
 package com.example.todo.user.service;
 
+import java.util.List;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.todo.user.dto.CreateUserRequest;
@@ -31,5 +33,9 @@ public class UserService {
             u.setRole(role);
             return userRepository.save(u);
         }).orElse(null);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll(Sort.by("username").ascending());
     }
 }
